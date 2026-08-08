@@ -18,18 +18,7 @@ You can use PNG/WebP too by changing the names in `script.js`.
 
 Open `index.html` and edit the paragraphs in the story and letter sections.
 
-The supplied letter is already written around:
-- Meeting in school
-- 6th class
-- Loving her since childhood
-- Meeting a few memorable times
 
-## Free hosting
-
-This is a static website, so it can be hosted for free on GitHub Pages.
-
-Typical final URL:
-https://YOUR-USERNAME.github.io/thanuja-love-story/
 
 For a public GitHub Pages site, don't upload sensitive/private documents. Photos and personal messages are public to anyone with access to the URL.
 
