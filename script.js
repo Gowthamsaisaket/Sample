@@ -1,48 +1,221 @@
-const scenes=[...document.querySelectorAll(".scene")];
-let current=0;
-const music=document.getElementById("bgMusic");
-const musicBtn=document.getElementById("musicBtn");
-const musicText=document.getElementById("musicText");
+const scenes = [...document.querySelectorAll(".scene")];
 
-function go(n){
-  current=Math.max(0,Math.min(n,scenes.length-1));
-  scenes.forEach((s,i)=>s.classList.toggle("active",i===current));
-  window.scrollTo(0,0);
-  // Try to start the supplied music after the first user interaction.
-  if(current>0 && music.paused){
-    music.play().then(()=>{
-      musicBtn.textContent="Ⅱ";
-      musicText.textContent="Music playing";
-    }).catch(()=>{});
+let current = 0;
+
+const music = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicBtn");
+const musicText = document.getElementById("musicText");
+
+
+/* =========================================
+   SCENE NAVIGATION
+   ========================================= */
+
+function go(n) {
+
+  // Keep scene number within available range
+  current = Math.max(0, Math.min(n, scenes.length - 1));
+
+  // Show only the selected scene
+  scenes.forEach((scene, index) => {
+
+    scene.classList.toggle("active", index === current);
+
+    // Reset scroll position every time a scene opens
+    scene.scrollTop = 0;
+
+  });
+
+
+  /* =========================================
+     MUSIC
+     Start music after user interaction
+     ========================================= */
+
+  if (current > 0 && music && music.paused) {
+
+    music.play()
+      .then(() => {
+
+        if (musicBtn) {
+          musicBtn.textContent = "Ⅱ";
+        }
+
+        if (musicText) {
+          musicText.textContent = "Music playing";
+        }
+
+      })
+      .catch(() => {
+
+        // Browser may block autoplay.
+        // User can press the music button manually.
+
+      });
+
   }
+
 }
-musicBtn.addEventListener("click",()=>{
-  if(music.paused){
-    music.play().then(()=>{musicBtn.textContent="Ⅱ";musicText.textContent="Music playing"});
-  }else{
-    music.pause(); musicBtn.textContent="▶"; musicText.textContent="Music paused";
-  }
-});
 
-// Optional photo loader: place photo01.jpg, photo02.jpg, photo03.jpg, photo04.jpg
-// in the same folder as index.html.
-const photos=["photo01.jpg","photo02.jpg","photo03.jpg","photo04.jpg"];
-["photo1","photo2","photo3","photo4"].forEach((id,i)=>{
-  const el=document.getElementById(id);
-  const img=new Image();
-  img.onload=()=>{
-    el.classList.remove("placeholder");
-    el.innerHTML="";
-    el.appendChild(img);
+
+/* =========================================
+   MUSIC BUTTON
+   ========================================= */
+
+if (musicBtn) {
+
+  musicBtn.addEventListener("click", () => {
+
+    if (!music) return;
+
+    if (music.paused) {
+
+      music.play()
+        .then(() => {
+
+          musicBtn.textContent = "Ⅱ";
+
+          if (musicText) {
+            musicText.textContent = "Music playing";
+          }
+
+        })
+        .catch(() => {
+
+          if (musicText) {
+            musicText.textContent = "Tap again to play";
+          }
+
+        });
+
+    } else {
+
+      music.pause();
+
+      musicBtn.textContent = "▶";
+
+      if (musicText) {
+        musicText.textContent = "Music paused";
+      }
+
+    }
+
+  });
+
+}
+
+
+/* =========================================
+   PHOTO LOADER
+   =========================================
+
+   These files must be in the same folder
+   as index.html:
+
+   photo01.jpg
+   photo02.jpg
+   photo03.jpg
+   photo04.jpg
+   ========================================= */
+
+const photos = [
+  "photo01.jpg",
+  "photo02.jpg",
+  "photo03.jpg",
+  "photo04.jpg"
+];
+
+
+["photo1", "photo2", "photo3", "photo4"].forEach((id, index) => {
+
+  const element = document.getElementById(id);
+
+  if (!element) return;
+
+  const image = new Image();
+
+  image.onload = () => {
+
+    element.classList.remove("placeholder");
+
+    element.innerHTML = "";
+
+    element.appendChild(image);
+
   };
-  img.src=photos[i];
+
+  image.onerror = () => {
+
+    // Keep the existing placeholder if image is unavailable
+    console.log("Could not load image:", photos[index]);
+
+  };
+
+  image.src = photos[index];
+
 });
 
-// If the MP3 is missing, the browser simply leaves the music control available.
-music.addEventListener("error",()=>{musicText.textContent="Add music.mp3";musicBtn.disabled=true;});
 
-// Keyboard support for desktop preview.
-document.addEventListener("keydown",(e)=>{
-  if(e.key==="ArrowRight" && current<scenes.length-1) go(current+1);
-  if(e.key==="ArrowLeft" && current>0) go(current-1);
+/* =========================================
+   MUSIC ERROR HANDLING
+   ========================================= */
+
+if (music) {
+
+  music.addEventListener("error", () => {
+
+    if (musicText) {
+      musicText.textContent = "Add music.mp3";
+    }
+
+    if (musicBtn) {
+      musicBtn.disabled = true;
+    }
+
+  });
+
+}
+
+
+/* =========================================
+   KEYBOARD SUPPORT
+   =========================================
+
+   Useful when testing on a laptop/desktop.
+
+   ← Previous scene
+   → Next scene
+   ========================================= */
+
+document.addEventListener("keydown", (event) => {
+
+  if (event.key === "ArrowRight") {
+
+    if (current < scenes.length - 1) {
+      go(current + 1);
+    }
+
+  }
+
+  if (event.key === "ArrowLeft") {
+
+    if (current > 0) {
+      go(current - 1);
+    }
+
 });
+
+
+/* =========================================
+   INITIAL STATE
+   ========================================= */
+
+scenes.forEach((scene, index) => {
+
+  scene.classList.toggle("active", index === 0);
+
+  scene.scrollTop = 0;
+
+});
+
+current = 0;
