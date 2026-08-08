@@ -1,4 +1,4 @@
-# Thanuja ❤️ — Personal Love Story
+# ❤️ — Personal Love Story
 
 This is a free, static, mobile-first love-story website.
 
