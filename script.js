@@ -13,24 +13,19 @@ const musicText = document.getElementById("musicText");
 
 function go(n) {
 
-  // Keep scene number within available range
   current = Math.max(0, Math.min(n, scenes.length - 1));
 
-  // Show only the selected scene
   scenes.forEach((scene, index) => {
 
     scene.classList.toggle("active", index === current);
 
-    // Reset scroll position every time a scene opens
+    // Reset the individual scene's scroll position
     scene.scrollTop = 0;
 
   });
 
 
-  /* =========================================
-     MUSIC
-     Start music after user interaction
-     ========================================= */
+  /* Start music after user interaction */
 
   if (current > 0 && music && music.paused) {
 
@@ -48,7 +43,7 @@ function go(n) {
       })
       .catch(() => {
 
-        // Browser may block autoplay.
+        // Browser may block automatic playback.
         // User can press the music button manually.
 
       });
@@ -107,15 +102,6 @@ if (musicBtn) {
 
 /* =========================================
    PHOTO LOADER
-   =========================================
-
-   These files must be in the same folder
-   as index.html:
-
-   photo01.jpg
-   photo02.jpg
-   photo03.jpg
-   photo04.jpg
    ========================================= */
 
 const photos = [
@@ -146,7 +132,6 @@ const photos = [
 
   image.onerror = () => {
 
-    // Keep the existing placeholder if image is unavailable
     console.log("Could not load image:", photos[index]);
 
   };
@@ -179,12 +164,6 @@ if (music) {
 
 /* =========================================
    KEYBOARD SUPPORT
-   =========================================
-
-   Useful when testing on a laptop/desktop.
-
-   ← Previous scene
-   → Next scene
    ========================================= */
 
 document.addEventListener("keydown", (event) => {
@@ -202,6 +181,8 @@ document.addEventListener("keydown", (event) => {
     if (current > 0) {
       go(current - 1);
     }
+
+  }
 
 });
 
