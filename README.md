@@ -19,8 +19,6 @@ You can use PNG/WebP too by changing the names in `script.js`.
 Open `index.html` and edit the paragraphs in the story and letter sections.
 
 The supplied letter is already written around:
-- Thanuja
-- Gowtham Sai Saketh
 - Meeting in school
 - 6th class
 - Loving her since childhood
