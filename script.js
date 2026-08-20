@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
   /* =========================================
      SCENE NAVIGATION
      ========================================= */
-
   function go(n) {
 
     current = Math.max(0, Math.min(n, scenes.length - 1));
